@@ -6,20 +6,41 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "sanity:dev": "sanity dev",
+    "sanity:deploy": "sanity deploy"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@sanity/client": "^7.15.0",
+    "@sanity/image-url": "^2.0.3",
+    "@types/leaflet": "^1.9.21",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.575.0",
     "next": "16.1.6",
+    "next-sanity": "^12.1.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.71.2",
+    "react-leaflet": "^5.0.0",
+    "resend": "^6.9.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@sanity/vision": "^5.11.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "sanity": "^5.11.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

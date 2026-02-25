@@ -1,0 +1,658 @@
+# Plan de Implementación: El Peluperro Website Rebuild
+
+## Resumen
+
+Este plan detalla la implementación de una PWA moderna para El Peluperro, una peluquería canina móvil. El proyecto utiliza Next.js 14 (App Router), TypeScript, Tailwind CSS, y Sanity CMS. La implementación se divide en fases incrementales, comenzando con la infraestructura base y avanzando hacia funcionalidades más complejas.
+
+## Stack Tecnológico
+
+- Frontend: Next.js 14+ (App Router), React, TypeScript
+- Styling: Tailwind CSS
+- CMS: Sanity.io
+- Formularios: React Hook Form + Zod
+- Mapas: Leaflet.js
+- Email: Resend
+- Hosting: Vercel
+
+## Tareas
+
+- [x] 1. Configuración inicial del proyecto y estructura base
+  - Crear proyecto Next.js 14 con TypeScript y App Router
+  - Configurar Tailwind CSS con tema personalizado (colores de marca)
+  - Configurar ESLint, Prettier, y TypeScript strict mode
+  - Crear estructura de directorios según diseño (app/, components/, lib/, types/)
+  - Configurar variables de entorno (.env.local template)
+  - _Requisitos: 1.2, 1.3_
+
+- [ ] 2. Configurar Sanity CMS
+  - [ ] 2.1 Inicializar proyecto Sanity en directorio /sanity
+    - Instalar dependencias de Sanity
+    - Configurar sanity.config.ts con project ID y dataset
+    - _Requisitos: 13.1_
+  - [ ] 2.2 Crear schemas de contenido en Sanity
+    - Implementar schema de Blog Post (title, slug, excerpt, content, featuredImage, category, tags, publishedAt, author)
+    - Implementar schema de Category (title, slug, description)
+    - Implementar schema de Testimonial (clientName, dogBreed, content, rating, image, featured, publishedAt)
+    - Implementar schema de Gallery Item (title, beforeImage, afterImage, serviceType, dogBreed, description, order)
+    - Implementar schema de Service (name, slug, description, priceMin, priceMax, duration, features, images, icon, order)
+    - _Requisitos: 4.1, 5.1, 6.1, 7.1, 13.2_
+  - [ ] 2.3 Configurar cliente Sanity en Next.js
+    - Crear lib/sanity/client.ts con configuración del cliente
+    - Crear lib/sanity/queries.ts con queries GROQ para cada tipo de contenido
+    - Implementar funciones helper para fetch de datos (getServices, getBlogPosts, getTestimonials, getGalleryItems)
+    - _Requisitos: 7.1, 13.1_
+
+- [ ] 3. Implementar componentes UI base y sistema de diseño
+  - [ ] 3.1 Crear componentes UI reutilizables
+    - Implementar Button component con variantes (primary, secondary, outline, ghost) y tamaños
+    - Implementar Card component con soporte para imagen, título, descripción, footer
+    - Implementar Modal component con gestión de foco y accesibilidad
+    - Implementar Carousel component con navegación y autoplay
+    - Implementar Input, Select, Textarea components con estilos consistentes
+    - _Requisitos: 11.2, 18.3_
+  - [ ]\* 3.2 Escribir tests unitarios para componentes UI
+    - Test de renderizado con diferentes props
+    - Test de interacciones de usuario (clicks, hover)
+    - Test de accesibilidad con jest-axe
+    - _Requisitos: 18.1_
+
+- [ ] 4. Implementar Layout y navegación
+  - [ ] 4.1 Crear componente Header
+    - Implementar logo de El Peluperro (mantener diseño actual)
+    - Implementar navegación principal (Inicio, Servicios, Galería, Blog, Sobre Nosotros, Contacto)
+    - Implementar botón CTA "Reservar Cita"
+    - Implementar menú hamburguesa responsive para móvil
+    - Mostrar número de teléfono en header
+    - _Requisitos: 1.1, 2.1, 14.1_
+  - [ ] 4.2 Crear componente Footer
+    - Implementar enlaces rápidos a páginas principales
+    - Implementar enlaces a redes sociales
+    - Mostrar información de contacto (teléfono, email, horario)
+    - Implementar enlaces legales (Política de Privacidad, Cookies)
+    - Incluir nombre "José Antonio Camacho" como dueño
+    - _Requisitos: 1.4, 14.1, 14.2, 14.5, 19.1, 20.1, 20.2_
+  - [ ] 4.3 Crear Root Layout (app/layout.tsx)
+    - Configurar metadata global (title, description, Open Graph)
+    - Incluir Header y Footer
+    - Configurar fuentes y estilos globales
+    - Implementar estructura HTML semántica
+    - _Requisitos: 12.1, 12.7, 18.1_
+  - [ ]\* 4.4 Escribir test de propiedad para navegación
+    - **Propiedad 26: Interactive Element Keyboard Accessibility**
+    - **Valida: Requisitos 18.3**
+
+- [ ] 5. Implementar página de inicio (Homepage)
+  - [ ] 5.1 Crear Hero section
+    - Implementar diseño hero con título principal y subtítulo
+    - Añadir animaciones sutiles de perritos (CSS animations o Lottie)
+    - Incluir CTA principal "Reservar Cita"
+    - Optimizar para responsive (mobile-first)
+    - _Requisitos: 2.1, 11.1, 11.3_
+  - [ ] 5.2 Crear sección de servicios destacados
+    - Mostrar cards de los 3 servicios principales (Baño, Peluquería, Antiparasitarios)
+    - Fetch datos desde Sanity
+    - Implementar hover effects
+    - Enlazar a página de servicios detallada
+    - _Requisitos: 4.1, 11.2_
+  - [ ] 5.3 Crear sección de testimonios
+    - Implementar carousel de testimonios
+    - Fetch testimonios desde Sanity (featured = true)
+    - Mostrar nombre de cliente, raza de perro, y rating
+    - Implementar navegación del carousel (flechas y dots)
+    - _Requisitos: 6.1, 6.2, 6.3, 6.4_
+  - [ ] 5.4 Integrar mapa de zona de cobertura
+    - Implementar ServiceAreaMap component con Leaflet
+    - Marcar Alcalá de Guadaíra y Sevilla
+    - Mostrar polígonos de zona de cobertura
+    - Añadir controles de zoom y navegación
+    - _Requisitos: 8.1, 8.2, 8.4_
+  - [ ]\* 5.5 Escribir test de propiedad para responsive layout
+    - **Propiedad 1: Responsive Layout Integrity**
+    - **Valida: Requisitos 2.1, 2.2, 2.3**
+
+- [ ] 6. Checkpoint - Verificar homepage y navegación
+  - Asegurar que todos los tests pasen, preguntar al usuario si surgen dudas.
+
+- [ ] 7. Implementar página de Servicios
+  - [ ] 7.1 Crear página de lista de servicios (app/servicios/page.tsx)
+    - Fetch todos los servicios desde Sanity ordenados por 'order'
+    - Mostrar cada servicio con descripción, precio, duración, features
+    - Implementar ServiceCard component con imágenes optimizadas
+    - Añadir CTA "Reservar este servicio" en cada card
+    - _Requisitos: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [ ] 7.2 Crear página de detalle de servicio (app/servicios/[slug]/page.tsx)
+    - Implementar dynamic route con slug
+    - Mostrar información completa del servicio
+    - Incluir galería de imágenes del servicio
+    - Añadir botones de compartir en redes sociales
+    - Implementar generateMetadata para SEO
+    - _Requisitos: 4.5, 12.5, 19.2_
+  - [ ]\* 7.3 Escribir test de propiedad para completitud de servicios
+    - **Propiedad 6: Service Completeness**
+    - **Valida: Requisitos 4.2, 4.3, 4.4, 4.5**
+
+- [ ] 8. Implementar Galería antes/después
+  - [ ] 8.1 Crear página de galería (app/galeria/page.tsx)
+    - Fetch gallery items desde Sanity ordenados por 'order'
+    - Implementar grid responsive de imágenes
+    - Mostrar imágenes antes/después lado a lado
+    - Implementar filtros por tipo de servicio
+    - Implementar lazy loading de imágenes
+    - _Requisitos: 5.1, 5.2, 5.5_
+  - [ ] 8.2 Implementar modal de imagen ampliada
+    - Crear ImageModal component
+    - Mostrar imagen en tamaño completo al hacer clic
+    - Incluir navegación entre imágenes (anterior/siguiente)
+    - Implementar cierre con ESC y click fuera
+    - Gestionar foco para accesibilidad
+    - _Requisitos: 5.3, 18.3_
+  - [ ]\* 8.3 Escribir tests de propiedad para galería
+    - **Propiedad 7: Gallery Item Structure**
+    - **Propiedad 8: Gallery Organization**
+    - **Propiedad 9: Gallery Image Expansion**
+    - **Valida: Requisitos 5.1, 5.2, 5.3**
+
+- [ ] 9. Implementar Blog
+  - [ ] 9.1 Crear página de lista de posts (app/blog/page.tsx)
+    - Fetch posts desde Sanity ordenados por publishedAt descendente
+    - Mostrar grid de post cards con imagen, título, excerpt, fecha
+    - Calcular y mostrar tiempo de lectura estimado
+    - Implementar paginación (10 posts por página)
+    - _Requisitos: 7.1, 7.3, 7.7_
+  - [ ] 9.2 Implementar búsqueda y filtros de blog
+    - Crear SearchBar component con debounce
+    - Implementar filtro por categoría (dropdown o tabs)
+    - Implementar filtro por tags
+    - Actualizar resultados dinámicamente
+    - _Requisitos: 7.4, 7.5_
+  - [ ] 9.3 Crear página de post individual (app/blog/[slug]/page.tsx)
+    - Implementar dynamic route con slug
+    - Renderizar contenido rich text de Sanity (PortableText)
+    - Mostrar imagen destacada, título, fecha, autor, categoría, tags
+    - Mostrar tiempo de lectura
+    - Añadir botones de compartir en redes sociales
+    - Implementar generateMetadata para SEO
+    - _Requisitos: 7.6, 7.7, 12.5, 19.2_
+  - [ ] 9.4 Crear página de categoría (app/blog/categoria/[slug]/page.tsx)
+    - Mostrar posts filtrados por categoría
+    - Mostrar descripción de la categoría
+    - Reutilizar componente de lista de posts
+    - _Requisitos: 7.4_
+  - [ ]\* 9.5 Escribir tests de propiedad para blog
+    - **Propiedad 12: Blog Post Chronological Ordering**
+    - **Propiedad 13: Blog Post Navigation**
+    - **Propiedad 14: Reading Time Calculation**
+    - **Valida: Requisitos 7.3, 7.6, 7.7**
+
+- [ ] 10. Checkpoint - Verificar contenido y navegación
+  - Asegurar que todos los tests pasen, preguntar al usuario si surgen dudas.
+
+- [ ] 11. Implementar sistema de formularios y validación
+  - [ ] 11.1 Crear esquemas de validación Zod
+    - Implementar bookingSchema (name, phone, address, city, serviceType, preferredDate, comments)
+    - Implementar contactSchema (name, email, phone, subject, message)
+    - Crear mensajes de error en español
+    - Exportar tipos TypeScript desde schemas
+    - _Requisitos: 3.2, 14.4_
+  - [ ] 11.2 Crear componente FormField reutilizable
+    - Implementar wrapper para inputs con label, error message, y helper text
+    - Integrar con React Hook Form
+    - Aplicar estilos consistentes con Tailwind
+    - Implementar estados de validación visual
+    - _Requisitos: 3.2_
+
+- [ ] 12. Implementar formulario de reservas
+  - [ ] 12.1 Crear página de reservas (app/reservar/page.tsx)
+    - Implementar BookingForm component con React Hook Form
+    - Campos: nombre, teléfono, dirección, ciudad (select), tipo de servicio (select), fecha preferida (date picker), comentarios (textarea)
+    - Integrar validación con bookingSchema
+    - Implementar validación de zona de cobertura
+    - Mostrar mensajes de error inline
+    - Deshabilitar botón submit durante validación
+    - _Requisitos: 3.1, 3.2, 3.5_
+  - [ ] 12.2 Implementar lógica de validación de zona de cobertura
+    - Crear función isInServiceArea que valida ciudad seleccionada
+    - Mostrar mensaje informativo si está fuera de zona
+    - Permitir envío de formulario con disclaimer
+    - _Requisitos: 3.5, 3.6_
+  - [ ] 12.3 Crear API route para booking (app/api/booking/route.ts)
+    - Implementar POST handler
+    - Validar datos con bookingSchema en servidor
+    - Enviar email de notificación al admin usando Resend
+    - Enviar email de confirmación al usuario
+    - Retornar respuesta con success/error
+    - Implementar manejo de errores y logging
+    - _Requisitos: 3.3, 3.4_
+  - [ ] 12.4 Implementar UI de confirmación de reserva
+    - Mostrar mensaje de éxito tras envío
+    - Incluir información de próximos pasos
+    - Añadir botón para volver a inicio o hacer otra reserva
+    - _Requisitos: 3.4_
+  - [ ]\* 12.5 Escribir tests de propiedad para booking
+    - **Propiedad 2: Booking Form Data Capture**
+    - **Propiedad 3: Booking Submission Effects**
+    - **Propiedad 4: Service Area Validation**
+    - **Propiedad 5: Out-of-Area Messaging**
+    - **Valida: Requisitos 3.2, 3.3, 3.4, 3.5, 3.6**
+
+- [ ] 13. Implementar formulario de contacto
+  - [ ] 13.1 Crear página de contacto (app/contacto/page.tsx)
+    - Implementar ContactForm component con React Hook Form
+    - Campos: nombre, email, teléfono (opcional), asunto, mensaje
+    - Integrar validación con contactSchema
+    - Mostrar información de contacto (teléfono, email, horario, WhatsApp)
+    - Incluir mapa de zona de cobertura
+    - _Requisitos: 14.1, 14.2, 14.3, 14.4, 14.5_
+  - [ ] 13.2 Crear API route para contacto (app/api/contact/route.ts)
+    - Implementar POST handler
+    - Validar datos con contactSchema en servidor
+    - Enviar email de notificación al admin
+    - Retornar respuesta con success/error
+    - _Requisitos: 14.6_
+  - [ ]\* 13.3 Escribir test de propiedad para contacto
+    - **Propiedad 23: Contact Form Notification**
+    - **Valida: Requisitos 14.6**
+
+- [ ] 14. Implementar elementos interactivos
+  - [ ] 14.1 Crear calculadora de precios (components/interactive/PriceCalculator.tsx)
+    - Implementar selección de servicios (checkboxes múltiples)
+    - Implementar selector de tamaño de perro (radio buttons)
+    - Implementar selector de raza (opcional, autocomplete)
+    - Calcular precio estimado dinámicamente
+    - Mostrar rango de precio (mín - máx)
+    - Incluir disclaimer de precio orientativo
+    - Añadir botón "Reservar con estos servicios"
+    - _Requisitos: 9.1, 9.2, 9.3, 9.4, 9.5_
+  - [ ] 14.2 Crear quiz de recomendación (components/interactive/DogQuiz.tsx)
+    - Implementar 5-7 preguntas sobre estado del perro
+    - Preguntas: última visita al peluquero, estado del pelaje, comportamiento, necesidades especiales, tamaño
+    - Implementar navegación entre preguntas (siguiente/anterior)
+    - Calcular scoring basado en respuestas
+    - Mostrar resultado con servicios recomendados
+    - Incluir explicación de por qué se recomienda
+    - Añadir botón "Reservar Cita" en resultado
+    - _Requisitos: 10.1, 10.2, 10.3, 10.4, 10.5_
+  - [ ] 14.3 Crear página del quiz (app/quiz/page.tsx)
+    - Integrar DogQuiz component
+    - Implementar diseño divertido y atractivo
+    - Añadir animaciones de transición entre preguntas
+    - _Requisitos: 10.1, 11.3_
+  - [ ]\* 14.4 Escribir tests de propiedad para elementos interactivos
+    - **Propiedad 15: Price Calculator Output Format**
+    - **Propiedad 16: Multi-Service Price Calculation**
+    - **Propiedad 17: Quiz Recommendation Generation**
+    - **Propiedad 18: Quiz Result Explanation**
+    - **Valida: Requisitos 9.2, 9.3, 9.5, 10.2, 10.4**
+
+- [ ] 15. Implementar página "Sobre Nosotros"
+  - [ ] 15.1 Crear página sobre nosotros (app/sobre-nosotros/page.tsx)
+    - Presentar a José Antonio Camacho con foto y biografía
+    - Destacar experiencia y cualificaciones
+    - Explicar el concepto de servicio móvil
+    - Incluir misión y valores del negocio
+    - Añadir timeline o sección de historia
+    - _Requisitos: 15.1, 15.2, 15.3, 15.4, 15.5_
+
+- [ ] 16. Checkpoint - Verificar formularios e interactividad
+  - Asegurar que todos los tests pasen, preguntar al usuario si surgen dudas.
+
+- [ ] 17. Implementar optimizaciones de rendimiento
+  - [ ] 17.1 Configurar optimización de imágenes
+    - Usar Next.js Image component en todos los lugares
+    - Configurar dominios de imágenes en next.config.js (Sanity CDN)
+    - Implementar lazy loading con intersection observer
+    - Generar imágenes responsive con srcset
+    - Convertir imágenes a WebP automáticamente
+    - _Requisitos: 12.4, 17.1_
+  - [ ] 17.2 Implementar code splitting y lazy loading
+    - Usar dynamic imports para componentes pesados (mapa, quiz, calculadora)
+    - Implementar loading states para componentes lazy
+    - Optimizar bundle size con tree shaking
+    - _Requisitos: 17.2, 17.4_
+  - [ ] 17.3 Configurar caché y compresión
+    - Configurar headers de caché en next.config.js
+    - Implementar ISR (Incremental Static Regeneration) para blog y servicios
+    - Configurar revalidación de datos de Sanity
+    - _Requisitos: 17.3_
+  - [ ]\* 17.4 Escribir test de propiedad para optimización de imágenes
+    - **Propiedad 20: Image Optimization**
+    - **Propiedad 24: Image Dimension Consistency**
+    - **Valida: Requisitos 12.4, 16.4**
+
+- [ ] 18. Implementar SEO y metadata
+  - [ ] 18.1 Configurar metadata global y por página
+    - Implementar generateMetadata en cada página
+    - Incluir title, description únicos por página
+    - Configurar Open Graph tags (og:title, og:description, og:image, og:type)
+    - Configurar Twitter Card tags
+    - Añadir canonical URLs
+    - _Requisitos: 12.1, 12.5, 12.7_
+  - [ ] 18.2 Implementar sitemap y robots.txt
+    - Crear app/sitemap.ts para generar sitemap.xml dinámico
+    - Incluir todas las páginas estáticas y dinámicas (blog posts, servicios)
+    - Crear app/robots.txt con reglas de crawling
+    - _Requisitos: 12.2_
+  - [ ] 18.3 Implementar Schema.org markup
+    - Añadir LocalBusiness schema en layout
+    - Incluir información: nombre, dirección, teléfono, horario, área de servicio
+    - Añadir Article schema en blog posts
+    - Añadir Product schema en servicios
+    - _Requisitos: 12.3_
+  - [ ] 18.4 Optimizar URLs y slugs
+    - Implementar función generateSlug para crear URLs amigables
+    - Asegurar slugs en minúsculas, con guiones, sin caracteres especiales
+    - Implementar en blog posts y servicios
+    - _Requisitos: 12.6, 13.6_
+  - [ ]\* 18.5 Escribir tests de propiedad para SEO
+    - **Propiedad 19: Page Metadata Completeness**
+    - **Propiedad 21: URL Slug Format**
+    - **Valida: Requisitos 12.1, 12.5, 12.6, 12.7, 12.9, 13.6**
+
+- [ ] 19. Implementar accesibilidad (a11y)
+  - [ ] 19.1 Mejorar accesibilidad de navegación
+    - Implementar skip links para navegación rápida
+    - Asegurar orden lógico de tabulación
+    - Añadir aria-labels descriptivos en navegación
+    - Implementar aria-current en página activa
+    - _Requisitos: 18.3, 18.5_
+  - [ ] 19.2 Mejorar accesibilidad de formularios
+    - Asociar labels con inputs correctamente
+    - Implementar aria-describedby para mensajes de error
+    - Añadir aria-required en campos obligatorios
+    - Implementar aria-invalid en campos con error
+    - _Requisitos: 18.2_
+  - [ ] 19.3 Mejorar accesibilidad de componentes interactivos
+    - Implementar gestión de foco en modales (focus trap)
+    - Añadir aria-expanded en elementos expandibles
+    - Implementar aria-live para anuncios dinámicos
+    - Asegurar contraste de color mínimo 4.5:1
+    - _Requisitos: 18.2, 18.4_
+  - [ ] 19.4 Añadir textos alternativos a imágenes
+    - Implementar alt descriptivo en todas las imágenes
+    - Usar alt="" en imágenes decorativas
+    - Incluir alt en imágenes de Sanity
+    - _Requisitos: 12.9_
+  - [ ]\* 19.5 Escribir tests de accesibilidad
+    - **Propiedad 26: Interactive Element Keyboard Accessibility**
+    - **Propiedad 27: Interactive Element ARIA Attributes**
+    - **Valida: Requisitos 18.2, 18.3**
+
+- [ ] 20. Implementar integración con redes sociales
+  - [ ] 20.1 Añadir enlaces a redes sociales
+    - Implementar SocialLinks component en footer
+    - Incluir iconos de redes sociales (Instagram, Facebook, etc.)
+    - Añadir enlaces a perfiles de El Peluperro
+    - _Requisitos: 19.1_
+  - [ ] 20.2 Implementar botones de compartir
+    - Crear ShareButtons component
+    - Implementar compartir en Facebook, Twitter, WhatsApp
+    - Añadir en páginas de servicios y blog posts
+    - Incluir metadata Open Graph para preview
+    - _Requisitos: 19.2, 12.7_
+  - [ ]\* 20.3 Integrar feed de Instagram (opcional)
+    - Mostrar últimas fotos de Instagram en homepage
+    - Usar Instagram Basic Display API
+    - Implementar fallback si API falla
+    - _Requisitos: 19.3_
+  - [ ]\* 20.4 Escribir test de propiedad para social sharing
+    - **Propiedad 28: Social Sharing Buttons**
+    - **Valida: Requisitos 19.2**
+
+- [x] 21. Implementar páginas legales y cookies
+  - [x] 21.1 Crear página de Política de Privacidad
+    - Redactar política conforme a RGPD
+    - Explicar qué datos se recopilan y cómo se usan
+    - Incluir información de contacto para ejercer derechos
+    - _Requisitos: 20.1, 20.4_
+  - [x] 21.2 Crear página de Política de Cookies
+    - Explicar qué cookies se usan y para qué
+    - Clasificar cookies (esenciales, analíticas, marketing)
+    - Explicar cómo gestionar cookies
+    - _Requisitos: 20.2_
+  - [x] 21.3 Implementar banner de consentimiento de cookies
+    - Crear CookieBanner component
+    - Mostrar en primera visita (verificar con localStorage)
+    - Permitir aceptar o rechazar cookies no esenciales
+    - Guardar preferencias del usuario
+    - Implementar lógica para cargar scripts según consentimiento
+    - _Requisitos: 20.3, 20.5_
+  - [ ]\* 21.4 Escribir test de propiedad para cookies
+    - **Propiedad 29: Cookie Consent Banner Display**
+    - **Valida: Requisitos 20.3**
+
+- [x] 22. Checkpoint - Verificar SEO, accesibilidad y legal
+  - Asegurar que todos los tests pasen, preguntar al usuario si surgen dudas.
+
+- [x] 23. Implementar Progressive Web App (PWA)
+  - [x] 23.1 Crear manifest.json
+    - Configurar name, short_name, description
+    - Configurar start_url, display (standalone), orientation
+    - Configurar theme_color y background_color con colores de marca
+    - Añadir iconos en múltiples tamaños (192x192, 512x512)
+    - Configurar purpose: "any maskable" para iconos
+    - _Requisitos: 21.1, 21.2, 21.8_
+  - [x] 23.2 Generar iconos de PWA
+    - Crear iconos de app basados en logo de El Peluperro
+    - Generar tamaños: 192x192, 512x512
+    - Optimizar para diferentes plataformas (iOS, Android)
+    - Guardar en /public/icons/
+    - _Requisitos: 21.2, 21.8_
+  - [x] 23.3 Implementar Service Worker
+    - Crear service worker con estrategias de caché
+    - Implementar cache-first para assets estáticos (CSS, JS, imágenes)
+    - Implementar network-first para contenido dinámico (API, Sanity)
+    - Cachear recursos críticos en instalación
+    - Implementar offline fallback page
+    - _Requisitos: 21.3, 21.6_
+  - [x] 23.4 Configurar registro de Service Worker
+    - Registrar service worker en app/layout.tsx
+    - Implementar manejo de errores de registro
+    - Añadir lógica de actualización de service worker
+    - _Requisitos: 21.3_
+  - [x] 23.5 Crear página offline
+    - Diseñar página simple para mostrar cuando no hay conexión
+    - Incluir logo y mensaje amigable
+    - Añadir botón para reintentar conexión
+    - _Requisitos: 21.6_
+  - [x] 23.6 Implementar splash screen
+    - Configurar splash screen en manifest
+    - Usar logo y colores de marca
+    - Optimizar para diferentes tamaños de pantalla
+    - _Requisitos: 21.7_
+  - [x] 23.7 Optimizar para instalación
+    - Implementar prompt de instalación personalizado
+    - Detectar si app ya está instalada
+    - Añadir evento beforeinstallprompt
+    - Mostrar banner de instalación en momento apropiado
+    - _Requisitos: 21.4_
+  - [ ]\* 23.8 Escribir tests de propiedad para PWA
+    - **Propiedad 30: PWA Manifest Validity**
+    - **Propiedad 31: Service Worker Resource Caching**
+    - **Valida: Requisitos 21.1, 21.2, 21.6**
+
+- [x] 24. Configurar servicios externos y deployment
+  - [x] 24.1 Configurar servicio de email (Resend)
+    - Crear cuenta en Resend
+    - Obtener API key y configurar en variables de entorno
+    - Crear templates de email para booking y contacto
+    - Implementar funciones helper en lib/email/
+    - Probar envío de emails en desarrollo
+    - _Requisitos: 3.3, 14.6_
+  - [x] 24.2 Configurar Google Analytics 4
+    - Crear propiedad en Google Analytics
+    - Implementar gtag.js en app/layout.tsx
+    - Configurar eventos personalizados (booking_submitted, contact_submitted, quiz_completed)
+    - Implementar respeto a consentimiento de cookies
+    - _Requisitos: tracking y analytics_
+  - [x] 24.3 Configurar Vercel para deployment
+    - Conectar repositorio Git con Vercel
+    - Configurar variables de entorno en Vercel
+    - Configurar dominio personalizado
+    - Configurar preview deployments para PRs
+    - _Requisitos: hosting y deployment_
+  - [x] 24.4 Configurar Sanity Studio deployment
+    - Desplegar Sanity Studio en subdirectorio o subdominio
+    - Configurar CORS en Sanity para dominio de producción
+    - Crear usuario admin para José Antonio Camacho
+    - Documentar acceso al CMS
+    - _Requisitos: 13.1_
+
+- [x] 25. Poblar contenido inicial
+  - [x] 25.1 Crear contenido de servicios en Sanity
+    - Añadir servicio "Baño" con descripción, precios, duración, features
+    - Añadir servicio "Peluquería" con descripción, precios, duración, features
+    - Añadir servicio "Antiparasitarios" con descripción, precios, duración, features
+    - Usar imágenes placeholder o generadas con IA
+    - _Requisitos: 4.1, 16.1, 16.2_
+  - [x] 25.2 Migrar contenido de blog existente
+    - Importar artículos de consejos de la web actual
+    - Crear categorías (higiene, alimentación, salud, comportamiento)
+    - Asignar categorías y tags a cada artículo
+    - Optimizar imágenes de artículos
+    - _Requisitos: 7.2, 16.1_
+  - [x] 25.3 Crear testimonios de ejemplo
+    - Añadir 6-8 testimonios con nombre, raza, contenido, rating
+    - Marcar algunos como featured para homepage
+    - Usar imágenes placeholder para fotos de clientes
+    - _Requisitos: 6.3, 16.1_
+  - [x] 25.4 Crear galería de ejemplo
+    - Añadir 12-15 items de galería con imágenes antes/después
+    - Distribuir entre tipos de servicio
+    - Usar imágenes generadas con IA o placeholders
+    - Documentar qué imágenes reemplazar con fotos reales
+    - _Requisitos: 5.4, 16.1, 16.3_
+
+- [x] 26. Testing y Quality Assurance
+  - [x] 26.1 Configurar framework de testing
+    - Instalar y configurar Vitest
+    - Configurar React Testing Library
+    - Configurar fast-check para property-based testing
+    - Configurar jest-axe para testing de accesibilidad
+    - Crear custom generators para domain types
+    - _Requisitos: testing infrastructure_
+  - [x] 26.2 Configurar Playwright para E2E testing
+    - Instalar Playwright
+    - Configurar browsers (Chromium, Firefox, WebKit)
+    - Crear tests E2E para flujos críticos: booking, contacto, navegación de blog, quiz
+    - _Requisitos: E2E testing_
+  - [ ]\* 26.3 Ejecutar suite completa de property tests
+    - Ejecutar todos los property tests implementados (Propiedades 1-31)
+    - Verificar que todos pasen con 100+ iteraciones
+    - Documentar cualquier fallo encontrado
+    - _Requisitos: todas las propiedades de correctitud_
+  - [ ]\* 26.4 Ejecutar tests de accesibilidad
+    - Ejecutar jest-axe en todos los componentes principales
+    - Verificar cumplimiento WCAG 2.1 AA
+    - Corregir violaciones encontradas
+    - _Requisitos: 18.1_
+  - [ ]\* 26.5 Ejecutar Lighthouse audit
+    - Ejecutar Lighthouse en todas las páginas principales
+    - Verificar scores mínimos: Performance 90+, Accessibility 90+, Best Practices 90+, SEO 90+, PWA 90+
+    - Documentar y corregir issues encontrados
+    - _Requisitos: 12.8, 21.10_
+
+- [ ] 27. Checkpoint final - Verificar calidad y rendimiento
+  - Asegurar que todos los tests pasen, preguntar al usuario si surgen dudas.
+
+- [ ] 28. Optimizaciones finales y pulido
+  - [ ] 28.1 Optimizar rendimiento
+    - Analizar bundle size y eliminar dependencias no usadas
+    - Implementar code splitting adicional donde sea necesario
+    - Optimizar imágenes que no estén optimizadas
+    - Verificar que lazy loading funcione correctamente
+    - _Requisitos: 2.5, 17.1, 17.2_
+  - [ ] 28.2 Revisar responsive design
+    - Probar en dispositivos reales (móvil, tablet, escritorio)
+    - Verificar breakpoints y ajustar si es necesario
+    - Asegurar que todas las funcionalidades funcionen en móvil
+    - _Requisitos: 2.1, 2.2, 2.3, 2.4_
+  - [ ] 28.3 Pulir animaciones y micro-interacciones
+    - Revisar todas las animaciones y asegurar que sean sutiles
+    - Añadir transiciones suaves donde falten
+    - Implementar hover effects en botones y enlaces
+    - Verificar que no afecten rendimiento
+    - _Requisitos: 11.1, 11.2, 11.3, 11.5_
+  - [ ] 28.4 Revisar y mejorar mensajes de error
+    - Verificar que todos los mensajes de error sean claros y en español
+    - Asegurar que los mensajes de éxito sean informativos
+    - Implementar loading states consistentes
+    - _Requisitos: 17.5_
+  - [ ] 28.5 Verificar información de contacto
+    - Asegurar que teléfono esté visible en todas las páginas
+    - Verificar que enlace de WhatsApp funcione correctamente
+    - Verificar que emails se envíen correctamente
+    - Probar formularios de contacto y reserva end-to-end
+    - _Requisitos: 14.1, 14.2, 14.3_
+
+- [ ] 29. Documentación
+  - [ ] 29.1 Crear README del proyecto
+    - Documentar stack tecnológico
+    - Incluir instrucciones de instalación y desarrollo
+    - Documentar variables de entorno necesarias
+    - Incluir comandos útiles (dev, build, test)
+    - _Requisitos: documentación técnica_
+  - [ ] 29.2 Documentar gestión de contenido
+    - Crear guía para usar Sanity Studio
+    - Documentar cómo crear posts de blog
+    - Documentar cómo añadir servicios y testimonios
+    - Documentar cómo actualizar galería
+    - _Requisitos: 13.1, 13.2_
+  - [ ] 29.3 Documentar imágenes a reemplazar
+    - Crear lista de todas las imágenes placeholder
+    - Especificar dimensiones requeridas para cada tipo
+    - Incluir instrucciones para reemplazar en Sanity
+    - _Requisitos: 16.3, 16.4, 16.5_
+  - [ ] 29.4 Crear guía de deployment
+    - Documentar proceso de deployment en Vercel
+    - Documentar configuración de dominio
+    - Documentar configuración de variables de entorno
+    - Incluir troubleshooting común
+    - _Requisitos: deployment_
+
+- [ ] 30. Integración final y deployment
+  - [ ] 30.1 Realizar testing final en staging
+    - Desplegar a ambiente de staging en Vercel
+    - Probar todos los flujos de usuario end-to-end
+    - Verificar que emails se envíen correctamente
+    - Probar en múltiples dispositivos y navegadores
+    - _Requisitos: 2.4, testing final_
+  - [ ] 30.2 Verificar configuración de producción
+    - Verificar todas las variables de entorno en Vercel
+    - Verificar configuración de dominio
+    - Verificar que Analytics esté funcionando
+    - Verificar que PWA se pueda instalar
+    - _Requisitos: 21.4, 21.5_
+  - [ ] 30.3 Realizar deployment a producción
+    - Hacer merge a rama main para deployment automático
+    - Verificar que deployment sea exitoso
+    - Probar sitio en producción
+    - Verificar que todos los servicios externos funcionen
+    - _Requisitos: deployment_
+  - [ ] 30.4 Configurar monitoreo y alertas
+    - Configurar Vercel Analytics
+    - Configurar alertas para errores críticos
+    - Configurar monitoreo de uptime
+    - Documentar cómo acceder a métricas
+    - _Requisitos: monitoring_
+
+- [ ] 31. Checkpoint final - Entrega
+  - Verificar que el sitio esté completamente funcional en producción, preguntar al usuario si hay ajustes finales.
+
+## Notas
+
+- Las tareas marcadas con `*` son opcionales y pueden omitirse para un MVP más rápido
+- Cada tarea referencia los requisitos específicos que valida para trazabilidad
+- Los checkpoints aseguran validación incremental del progreso
+- Los property tests validan propiedades universales de correctitud
+- Los unit tests validan casos específicos y edge cases
+- Se recomienda ejecutar tests frecuentemente durante el desarrollo
+
+## Próximos Pasos
+
+Una vez completado este plan de implementación:
+
+1. El sitio estará desplegado y funcional en producción
+2. José Antonio Camacho podrá gestionar contenido a través de Sanity Studio
+3. Los usuarios podrán reservar citas y contactar a través de formularios
+4. El sitio será instalable como PWA en dispositivos móviles
+5. Se habrán reemplazado las imágenes placeholder con fotos reales del negocio
