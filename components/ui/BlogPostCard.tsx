@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Calendar, Clock } from 'lucide-react';
 
 interface BlogPostCardProps {
@@ -29,16 +30,20 @@ export function BlogPostCard({
     day: 'numeric',
   });
 
+  console.log('BlogPostCard:', title, 'featuredImage:', featuredImage);
+
   return (
     <article className="group overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-xl">
       <Link href={`/blog/${slug}`}>
         {/* Imagen destacada */}
         <div className="relative h-48 overflow-hidden bg-gray-200">
           {featuredImage ? (
-            <img
+            <Image
               src={featuredImage}
               alt={title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">

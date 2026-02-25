@@ -9,9 +9,9 @@ import { ShareButtons } from '@/components/ui/ShareButtons';
 export const revalidate = 3600;
 
 interface ServiceDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Generate static params for all services
@@ -27,7 +27,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ServiceDetailPageProps): Promise<Metadata> {
-  const service = await getServiceBySlug(params.slug);
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
 
   if (!service) {
     return {
@@ -49,7 +50,8 @@ export async function generateMetadata({
 export default async function ServiceDetailPage({
   params,
 }: ServiceDetailPageProps) {
-  const service = await getServiceBySlug(params.slug);
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
 
   if (!service) {
     notFound();
@@ -70,7 +72,7 @@ export default async function ServiceDetailPage({
       lowPrice: service.priceMin,
       highPrice: service.priceMax,
       availability: 'https://schema.org/InStock',
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/servicios/${params.slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/servicios/${slug}`,
     },
     brand: {
       '@type': 'Brand',
@@ -194,7 +196,7 @@ export default async function ServiceDetailPage({
                 Compartir este servicio
               </h3>
               <ShareButtons
-                url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/servicios/${params.slug}`}
+                url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/servicios/${slug}`}
                 title={service.name}
               />
             </div>

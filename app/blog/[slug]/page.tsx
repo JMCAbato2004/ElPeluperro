@@ -6,14 +6,15 @@ import { getBlogPostBySlug } from '@/lib/sanity/helpers';
 import { calculateReadingTime } from '@/lib/sanity/helpers';
 import { ShareButtons } from '@/components/ui/ShareButtons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Revalidar cada 1 hora (3600 segundos)
 export const revalidate = 3600;
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Componentes personalizados para PortableText
@@ -67,7 +68,8 @@ const portableTextComponents = {
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     return {
@@ -90,7 +92,8 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -131,7 +134,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${params.slug}`,
+      '@id': `${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`,
     },
     articleSection: post.category?.title || 'General',
     keywords: post.tags?.join(', '),
@@ -203,9 +206,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Imagen destacada */}
         {post.featuredImage && (
           <div className="mb-8 overflow-hidden rounded-lg">
-            <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-              <span className="text-6xl">🐕</span>
-            </div>
+            {post.featuredImage.asset._ref.startsWith('/images/') ? (
+              <div className="aspect-video w-full relative">
+                <Image
+                  src={post.featuredImage.asset._ref}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            ) : (
+              <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                <span className="text-6xl">🐕</span>
+              </div>
+            )}
           </div>
         )}
 
@@ -242,7 +257,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               Compartir este artículo
             </h3>
             <ShareButtons
-              url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${params.slug}`}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`}
               title={post.title}
             />
           </div>

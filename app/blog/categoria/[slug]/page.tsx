@@ -151,17 +151,23 @@ export default function CategoryPage() {
                   ? calculateReadingTime(post.content)
                   : 5;
 
+                // Determinar la imagen a mostrar
+                let imageUrl: string | undefined = undefined;
+                if (post.featuredImage?.asset?._ref) {
+                  const ref = post.featuredImage.asset._ref;
+                  // Si la referencia es una ruta de imagen real, usarla directamente
+                  if (ref.startsWith('/images/')) {
+                    imageUrl = ref;
+                  }
+                }
+
                 return (
                   <BlogPostCard
                     key={post._id}
                     slug={post.slug.current}
                     title={post.title}
                     excerpt={post.excerpt || ''}
-                    featuredImage={
-                      post.featuredImage?.asset?._ref
-                        ? `/api/placeholder/400/300`
-                        : undefined
-                    }
+                    featuredImage={imageUrl}
                     publishedAt={post.publishedAt || new Date().toISOString()}
                     category={{
                       title: post.category?.title || category.title,

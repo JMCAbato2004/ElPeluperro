@@ -20,8 +20,18 @@ import type {
   GalleryItem,
 } from './types';
 
+// Check if Sanity is configured
+const isSanityConfigured = () => {
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  return projectId && projectId !== 'placeholder';
+};
+
 // Services
 export async function getServices(): Promise<Service[]> {
+  if (!isSanityConfigured()) {
+    return [];
+  }
+  
   try {
     return await client.fetch(servicesQuery);
   } catch (error) {
@@ -31,6 +41,10 @@ export async function getServices(): Promise<Service[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  if (!isSanityConfigured()) {
+    return null;
+  }
+  
   try {
     return await client.fetch(serviceBySlugQuery, { slug });
   } catch (error) {
@@ -41,6 +55,12 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
 
 // Blog Posts
 export async function getBlogPosts(): Promise<BlogPost[]> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockBlogPosts } = await import('@/lib/data/mockBlog');
+    return mockBlogPosts;
+  }
+  
   try {
     const posts = await client.fetch(blogPostsQuery);
     
@@ -65,6 +85,12 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockBlogPosts } = await import('@/lib/data/mockBlog');
+    return mockBlogPosts.find((p) => p.slug.current === slug) || null;
+  }
+  
   try {
     const post = await client.fetch(blogPostBySlugQuery, { slug });
     
@@ -91,6 +117,14 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 export async function getBlogPostsByCategory(
   categorySlug: string
 ): Promise<BlogPost[]> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockBlogPosts } = await import('@/lib/data/mockBlog');
+    return mockBlogPosts.filter(
+      (post) => post.category?.slug.current === categorySlug
+    );
+  }
+  
   try {
     const posts = await client.fetch(blogPostsByCategoryQuery, { categorySlug });
     
@@ -123,6 +157,12 @@ export async function getBlogPostsByCategory(
 
 // Categories
 export async function getCategories(): Promise<Category[]> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockCategories } = await import('@/lib/data/mockBlog');
+    return mockCategories;
+  }
+  
   try {
     const categories = await client.fetch(categoriesQuery);
     
@@ -149,6 +189,12 @@ export async function getCategories(): Promise<Category[]> {
 export async function getCategoryBySlug(
   slug: string
 ): Promise<Category | null> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockCategories } = await import('@/lib/data/mockBlog');
+    return mockCategories.find((c) => c.slug.current === slug) || null;
+  }
+  
   try {
     const category = await client.fetch(categoryBySlugQuery, { slug });
     
@@ -174,6 +220,10 @@ export async function getCategoryBySlug(
 
 // Testimonials
 export async function getTestimonials(): Promise<Testimonial[]> {
+  if (!isSanityConfigured()) {
+    return [];
+  }
+  
   try {
     return await client.fetch(testimonialsQuery);
   } catch (error) {
@@ -183,6 +233,10 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 }
 
 export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
+  if (!isSanityConfigured()) {
+    return [];
+  }
+  
   try {
     return await client.fetch(featuredTestimonialsQuery);
   } catch (error) {
@@ -193,6 +247,12 @@ export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
 
 // Gallery Items
 export async function getGalleryItems(): Promise<GalleryItem[]> {
+  // Si Sanity no está configurado, usar datos mock directamente
+  if (!isSanityConfigured()) {
+    const { mockGalleryItems } = await import('@/lib/data/mockGallery');
+    return mockGalleryItems;
+  }
+  
   try {
     const items = await client.fetch(galleryItemsQuery);
     
@@ -219,6 +279,10 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
 export async function getGalleryItemsByService(
   serviceType: string
 ): Promise<GalleryItem[]> {
+  if (!isSanityConfigured()) {
+    return [];
+  }
+  
   try {
     return await client.fetch(galleryItemsByServiceQuery, { serviceType });
   } catch (error) {

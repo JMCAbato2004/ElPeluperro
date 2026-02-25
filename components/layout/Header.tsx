@@ -52,6 +52,7 @@ export default function Header() {
                   src="/images/logo-4.png"
                   alt="El Peluperro - Peluquería Canina Móvil"
                   fill
+                  sizes="(max-width: 768px) 150px, 192px"
                   className="object-contain"
                   priority
                 />
