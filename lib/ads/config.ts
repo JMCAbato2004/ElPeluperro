@@ -32,28 +32,29 @@ export const AD_SLOTS = {
   // Blog
   blog_top: '1234567892', // Banner superior lista de posts
   blog_sidebar: '1234567893', // Sidebar lista de posts
-  blog_in_article_1: '1234567894', // Primer anuncio in-article
-  blog_in_article_2: '1234567895', // Segundo anuncio in-article
-  blog_bottom: '1234567896', // Banner inferior post
+  blog_in_feed: '1234567894', // Anuncio in-feed en lista de posts
+  blog_in_article_1: '1234567895', // Primer anuncio in-article
+  blog_in_article_2: '1234567896', // Segundo anuncio in-article
+  blog_bottom: '1234567897', // Banner inferior post
   
   // Servicios
-  services_top: '1234567897', // Banner superior servicios
-  services_sidebar: '1234567898', // Sidebar servicios
+  services_top: '1234567898', // Banner superior servicios
+  services_sidebar: '1234567899', // Sidebar servicios
   
   // Comparativas
-  comparison_top: '1234567899', // Banner superior comparativa
-  comparison_in_content: '1234567900', // Anuncio en medio de comparativa
-  comparison_bottom: '1234567901', // Banner inferior comparativa
+  comparison_top: '1234567900', // Banner superior comparativa
+  comparison_in_content: '1234567901', // Anuncio en medio de comparativa
+  comparison_bottom: '1234567902', // Banner inferior comparativa
   
   // Guías
-  guide_top: '1234567902', // Banner superior guía
-  guide_in_content_1: '1234567903', // Primer anuncio in-content
-  guide_in_content_2: '1234567904', // Segundo anuncio in-content
-  guide_sidebar: '1234567905', // Sidebar guía
+  guide_top: '1234567903', // Banner superior guía
+  guide_in_content_1: '1234567904', // Primer anuncio in-content
+  guide_in_content_2: '1234567905', // Segundo anuncio in-content
+  guide_sidebar: '1234567906', // Sidebar guía
   
   // Móvil
-  mobile_sticky: '1234567906', // Anuncio sticky móvil (bottom)
-  mobile_anchor: '1234567907', // Anuncio anchor móvil (top)
+  mobile_sticky: '1234567907', // Anuncio sticky móvil (bottom)
+  mobile_anchor: '1234567908', // Anuncio anchor móvil (top)
 } as const;
 
 /**

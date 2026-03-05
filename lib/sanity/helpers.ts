@@ -58,7 +58,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   // Si Sanity no está configurado, usar datos mock directamente
   if (!isSanityConfigured()) {
     const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-    return mockBlogPosts;
+    return mockBlogPosts as BlogPost[];
   }
   
   try {
@@ -67,7 +67,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     // Si no hay posts en Sanity, usar datos mock
     if (!posts || posts.length === 0) {
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-      return mockBlogPosts;
+      return mockBlogPosts as BlogPost[];
     }
     
     return posts;
@@ -77,7 +77,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     // En caso de error, intentar cargar datos mock
     try {
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-      return mockBlogPosts;
+      return mockBlogPosts as BlogPost[];
     } catch {
       return [];
     }
@@ -88,7 +88,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   // Si Sanity no está configurado, usar datos mock directamente
   if (!isSanityConfigured()) {
     const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-    return mockBlogPosts.find((p) => p.slug.current === slug) || null;
+    return (mockBlogPosts.find((p) => p.slug.current === slug) as BlogPost) || null;
   }
   
   try {
@@ -97,7 +97,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     // Si no hay post en Sanity, buscar en datos mock
     if (!post) {
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-      return mockBlogPosts.find((p) => p.slug.current === slug) || null;
+      return (mockBlogPosts.find((p) => p.slug.current === slug) as BlogPost) || null;
     }
     
     return post;
@@ -107,7 +107,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     // En caso de error, intentar cargar desde datos mock
     try {
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
-      return mockBlogPosts.find((p) => p.slug.current === slug) || null;
+      return (mockBlogPosts.find((p) => p.slug.current === slug) as BlogPost) || null;
     } catch {
       return null;
     }
@@ -122,7 +122,7 @@ export async function getBlogPostsByCategory(
     const { mockBlogPosts } = await import('@/lib/data/mockBlog');
     return mockBlogPosts.filter(
       (post) => post.category?.slug.current === categorySlug
-    );
+    ) as BlogPost[];
   }
   
   try {
@@ -133,7 +133,7 @@ export async function getBlogPostsByCategory(
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
       return mockBlogPosts.filter(
         (post) => post.category?.slug.current === categorySlug
-      );
+      ) as BlogPost[];
     }
     
     return posts;
@@ -148,7 +148,7 @@ export async function getBlogPostsByCategory(
       const { mockBlogPosts } = await import('@/lib/data/mockBlog');
       return mockBlogPosts.filter(
         (post) => post.category?.slug.current === categorySlug
-      );
+      ) as BlogPost[];
     } catch {
       return [];
     }

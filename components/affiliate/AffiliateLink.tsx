@@ -49,7 +49,7 @@ export function AffiliateLink({
 
   // Manejar clic
   const handleClick = () => {
-    if (detectedPlatform && productId) {
+    if (detectedPlatform && productId && detectedPlatform !== 'other') {
       trackAffiliateClick(detectedPlatform, productId, productName);
     }
   };

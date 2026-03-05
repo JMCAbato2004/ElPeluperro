@@ -63,7 +63,7 @@ export default function BlogPage() {
         
         // Debug: verificar imágenes
         console.log('=== POSTS CARGADOS ===', fetchedPosts.length, 'posts');
-        fetchedPosts.slice(0, 5).forEach((post, i) => {
+        fetchedPosts.slice(0, 5).forEach((post: BlogPost, i: number) => {
           console.log(`${i + 1}. ${post.title}`);
           console.log(`   featuredImage:`, post.featuredImage);
           console.log(`   Image ref:`, post.featuredImage?.asset?._ref);

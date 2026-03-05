@@ -7,10 +7,10 @@
 import type { SanityImage } from '../sanity/types';
 
 const mockImage: SanityImage = {
-  _type: 'image',
+  _type: 'image' as const,
   asset: {
     _ref: 'image-placeholder',
-    _type: 'reference',
+    _type: 'reference' as const,
   },
 };
 

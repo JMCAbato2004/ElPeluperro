@@ -106,7 +106,7 @@ export function extractAsinFromUrl(url: string): string | null {
     const dpIndex = pathParts.indexOf('dp');
     
     if (dpIndex !== -1 && pathParts[dpIndex + 1]) {
-      return pathParts[dpIndex + 1];
+      return pathParts[dpIndex + 1] || null;
     }
     
     return null;
