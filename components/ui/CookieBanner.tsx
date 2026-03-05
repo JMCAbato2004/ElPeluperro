@@ -7,6 +7,7 @@ export function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [advertisingEnabled, setAdvertisingEnabled] = useState(false);
 
   useEffect(() => {
     // Verificar si el usuario ya ha dado su consentimiento
@@ -17,11 +18,12 @@ export function CookieBanner() {
       // Cargar preferencias guardadas
       const preferences = JSON.parse(consent);
       setAnalyticsEnabled(preferences.analytics || false);
+      setAdvertisingEnabled(preferences.advertising || false);
       loadScripts(preferences);
     }
   }, []);
 
-  const loadScripts = (preferences: { analytics: boolean }) => {
+  const loadScripts = (preferences: { analytics: boolean; advertising: boolean }) => {
     // Notificar a Google Analytics sobre el consentimiento
     if (preferences.analytics && typeof window !== 'undefined') {
       if (window.gtag) {
@@ -34,12 +36,30 @@ export function CookieBanner() {
         analytics_storage: 'denied',
       });
     }
+
+    // Notificar a Google AdSense sobre el consentimiento
+    if (preferences.advertising && typeof window !== 'undefined') {
+      if (window.gtag) {
+        window.gtag('consent', 'update', {
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
+        });
+      }
+    } else if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('consent', 'update', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+    }
   };
 
   const acceptAll = () => {
     const preferences = {
       essential: true,
       analytics: true,
+      advertising: true,
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem('cookie_consent', JSON.stringify(preferences));
@@ -51,6 +71,7 @@ export function CookieBanner() {
     const preferences = {
       essential: true,
       analytics: false,
+      advertising: false,
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem('cookie_consent', JSON.stringify(preferences));
@@ -61,6 +82,7 @@ export function CookieBanner() {
     const preferences = {
       essential: true,
       analytics: analyticsEnabled,
+      advertising: advertisingEnabled,
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem('cookie_consent', JSON.stringify(preferences));
@@ -89,8 +111,9 @@ export function CookieBanner() {
                 🍪 Este sitio utiliza cookies
               </h2>
               <p className="text-sm text-gray-600">
-                Utilizamos cookies esenciales para el funcionamiento del sitio y cookies analíticas 
-                para mejorar tu experiencia. Puedes aceptar todas las cookies o configurar tus preferencias.{' '}
+                Utilizamos cookies esenciales para el funcionamiento del sitio, cookies analíticas 
+                para mejorar tu experiencia, y cookies publicitarias para mostrar anuncios relevantes. 
+                Puedes aceptar todas las cookies o configurar tus preferencias.{' '}
                 <Link href="/cookies" className="text-primary hover:underline font-medium">
                   Más información
                 </Link>
@@ -170,6 +193,25 @@ export function CookieBanner() {
                     onChange={(e) => setAnalyticsEnabled(e.target.checked)}
                     className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
                     aria-label="Cookies analíticas"
+                  />
+                </div>
+              </div>
+
+              {/* Cookies publicitarias */}
+              <div className="flex items-start justify-between rounded-lg border border-gray-200 p-4">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-dark mb-1">Cookies Publicitarias</h3>
+                  <p className="text-sm text-gray-600">
+                    Utilizadas por Google AdSense para mostrar anuncios personalizados según sus intereses.
+                  </p>
+                </div>
+                <div className="ml-4">
+                  <input
+                    type="checkbox"
+                    checked={advertisingEnabled}
+                    onChange={(e) => setAdvertisingEnabled(e.target.checked)}
+                    className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
+                    aria-label="Cookies publicitarias"
                   />
                 </div>
               </div>

@@ -7,6 +7,7 @@ import { CookieBanner } from '@/components/ui/CookieBanner';
 import { PWAInstallPrompt } from '@/components/ui/PWAInstallPrompt';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { AdSenseScript } from '@/components/ads/AdSenseScript';
 import { CONTACT_INFO } from '@/lib/config/contact';
 
 const inter = Inter({
@@ -18,19 +19,24 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://elpeluperro.com'),
   title: {
-    default: 'El Peluperro - Peluquería Canina Móvil en Sevilla',
+    default: 'El Peluperro - Tu Guía de Cuidado Canino | Consejos de un Profesional',
     template: '%s | El Peluperro',
   },
   description:
-    'Peluquería canina móvil en Alcalá de Guadaíra y Sevilla. Servicios profesionales de baño, peluquería y antiparasitarios para tu mascota. Nos desplazamos a tu domicilio.',
+    'Portal de referencia sobre cuidado canino con guías completas, comparativas honestas y consejos de un peluquero profesional con más de X años de experiencia. Servicios de peluquería móvil en Sevilla.',
   keywords: [
+    'cuidado canino',
+    'guía perros',
+    'consejos perros',
+    'productos para perros',
+    'comparativas perros',
     'peluquería canina',
-    'peluquería móvil',
     'Sevilla',
     'Alcalá de Guadaíra',
     'baño perros',
     'grooming',
-    'cuidado mascotas',
+    'razas de perros',
+    'salud canina',
   ],
   authors: [{ name: 'José Antonio Camacho' }],
   creator: 'José Antonio Camacho',
@@ -39,23 +45,23 @@ export const metadata: Metadata = {
     locale: 'es_ES',
     url: 'https://elpeluperro.com',
     siteName: 'El Peluperro',
-    title: 'El Peluperro - Peluquería Canina Móvil en Sevilla',
+    title: 'El Peluperro - Tu Guía de Cuidado Canino',
     description:
-      'Peluquería canina móvil en Alcalá de Guadaíra y Sevilla. Servicios profesionales de baño, peluquería y antiparasitarios para tu mascota.',
+      'Portal de referencia sobre cuidado canino con guías completas, comparativas honestas y consejos de un peluquero profesional. Contenido basado en experiencia real.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'El Peluperro - Peluquería Canina Móvil',
+        alt: 'El Peluperro - Guía de Cuidado Canino',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'El Peluperro - Peluquería Canina Móvil en Sevilla',
+    title: 'El Peluperro - Tu Guía de Cuidado Canino',
     description:
-      'Peluquería canina móvil en Alcalá de Guadaíra y Sevilla. Servicios profesionales para tu mascota.',
+      'Guías completas, comparativas honestas y consejos de un peluquero profesional con experiencia real.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -82,7 +88,7 @@ export default function RootLayout({
     '@id': 'https://elpeluperro.com',
     name: 'El Peluperro',
     description:
-      'Peluquería canina móvil en Alcalá de Guadaíra y Sevilla. Servicios profesionales de baño, peluquería y antiparasitarios para tu mascota.',
+      'Portal de referencia sobre cuidado canino con guías, comparativas y consejos de un peluquero profesional. También ofrecemos servicios de peluquería canina móvil en Sevilla y Alcalá de Guadaíra.',
     url: 'https://elpeluperro.com',
     telephone: CONTACT_INFO.phoneInternational,
     email: CONTACT_INFO.email,
@@ -130,6 +136,8 @@ export default function RootLayout({
     founder: {
       '@type': 'Person',
       name: 'José Antonio Camacho',
+      jobTitle: 'Peluquero Canino Profesional',
+      url: 'https://elpeluperro.com/sobre-mi',
     },
   };
 
@@ -149,6 +157,7 @@ export default function RootLayout({
             __html: JSON.stringify(localBusinessSchema),
           }}
         />
+        <AdSenseScript />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <GoogleAnalytics />

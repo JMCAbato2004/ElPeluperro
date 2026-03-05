@@ -5,6 +5,11 @@ import { Calendar, Clock, Tag, User, Share2 } from 'lucide-react';
 import { getBlogPostBySlug } from '@/lib/sanity/helpers';
 import { calculateReadingTime } from '@/lib/sanity/helpers';
 import { ShareButtons } from '@/components/ui/ShareButtons';
+import { DisplayAd } from '@/components/ads/DisplayAd';
+import { InArticleAd } from '@/components/ads/InArticleAd';
+import { StickyAd } from '@/components/ads/StickyAd';
+import { AffiliateDisclosure } from '@/components/affiliate/AffiliateDisclosure';
+import { AD_SLOTS } from '@/lib/ads/config';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -17,8 +22,8 @@ interface BlogPostPageProps {
   }>;
 }
 
-// Componentes personalizados para PortableText
-const portableTextComponents = {
+// Componentes personalizados para PortableText con anuncios intercalados
+const createPortableTextComponents = (blockCount: { current: number }) => ({
   block: {
     h2: ({ children }: any) => (
       <h2 className="mb-4 mt-8 text-2xl font-bold text-dark">{children}</h2>
@@ -26,9 +31,21 @@ const portableTextComponents = {
     h3: ({ children }: any) => (
       <h3 className="mb-3 mt-6 text-xl font-bold text-dark">{children}</h3>
     ),
-    normal: ({ children }: any) => (
-      <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>
-    ),
+    normal: ({ children }: any) => {
+      blockCount.current++;
+      const shouldShowAd = blockCount.current > 0 && blockCount.current % 8 === 0;
+      
+      return (
+        <>
+          <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>
+          {shouldShowAd && (
+            <div className="my-8">
+              <InArticleAd slot={AD_SLOTS.blog_in_article_1} />
+            </div>
+          )}
+        </>
+      );
+    },
     blockquote: ({ children }: any) => (
       <blockquote className="my-6 border-l-4 border-primary pl-4 italic text-gray-600">
         {children}
@@ -63,7 +80,7 @@ const portableTextComponents = {
       </a>
     ),
   },
-};
+});
 
 export async function generateMetadata({
   params,
@@ -108,6 +125,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       day: 'numeric',
     }
   );
+
+  // Detectar si el artículo tiene contenido de afiliación
+  const hasAffiliateContent = 
+    post.tags?.some(tag => 
+      ['productos', 'comparativa', 'recomendaciones', 'champú', 'pienso', 'cepillo'].includes(tag.toLowerCase())
+    ) || 
+    post.category?.title?.toLowerCase().includes('productos') ||
+    post.title?.toLowerCase().includes('mejores') ||
+    post.title?.toLowerCase().includes('comparativa');
+
+  // Contador de bloques para anuncios intercalados
+  const blockCount = { current: 0 };
+  const portableTextComponents = createPortableTextComponents(blockCount);
 
   // Schema.org Article markup
   const articleSchema = {
@@ -203,17 +233,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </header>
 
+        {/* Divulgación de afiliados si aplica */}
+        {hasAffiliateContent && (
+          <div className="mb-8">
+            <AffiliateDisclosure variant="full" />
+          </div>
+        )}
+
+        {/* Anuncio superior - Display horizontal */}
+        <div className="mb-8">
+          <DisplayAd 
+            slot={AD_SLOTS.blog_top} 
+            format="horizontal"
+            className="mx-auto"
+          />
+        </div>
+
         {/* Imagen destacada */}
-        {post.featuredImage && (
-          <div className="mb-8 overflow-hidden rounded-lg">
+        {post.featuredImage?.asset?._ref && (
+          <div className="mb-8 overflow-hidden rounded-lg shadow-lg">
             {post.featuredImage.asset._ref.startsWith('/images/') ? (
-              <div className="aspect-video w-full relative">
+              <div className="aspect-video w-full relative bg-gray-100">
                 <Image
                   src={post.featuredImage.asset._ref}
                   alt={post.title}
                   fill
                   className="object-cover"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 />
               </div>
             ) : (
@@ -232,6 +279,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               components={portableTextComponents}
             />
           )}
+        </div>
+
+        {/* Anuncio inferior - Display horizontal */}
+        <div className="mb-12">
+          <DisplayAd 
+            slot={AD_SLOTS.blog_bottom} 
+            format="horizontal"
+            className="mx-auto"
+          />
         </div>
 
         {/* Tags */}
@@ -273,6 +329,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Anuncio sticky móvil */}
+      <StickyAd slot={AD_SLOTS.mobile_sticky} />
     </article>
   );
 }

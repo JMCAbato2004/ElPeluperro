@@ -54,6 +54,7 @@ const socialLinks = [
 const legalLinks = [
   { label: 'Política de Privacidad', href: '/privacidad' },
   { label: 'Política de Cookies', href: '/cookies' },
+  { label: 'Política de Afiliación', href: '/afiliacion' },
 ];
 
 export default function Footer() {
@@ -180,7 +181,7 @@ export default function Footer() {
           </div>
           <div className="text-center md:text-right">
             <p>
-              © {currentYear} El Peluperro - José Antonio Camacho. Todos los
+              © {currentYear} JMC Desarrolladores - José Manuel Camacho. Todos los
               derechos reservados.
             </p>
           </div>

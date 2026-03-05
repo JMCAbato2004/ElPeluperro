@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BookingForm } from '@/components/forms/BookingForm';
+import { CONTACT_INFO } from '@/lib/config/contact';
 
 export const metadata: Metadata = {
   title: 'Reservar Cita | El Peluperro',
@@ -69,14 +70,14 @@ export default function ReservarPage() {
           <p>
             ¿Tienes dudas? Llámanos al{' '}
             <a
-              href="tel:+34123456789"
+              href={`tel:${CONTACT_INFO.phoneRaw}`}
               className="text-primary hover:underline font-semibold"
             >
-              +34 123 456 789
+              {CONTACT_INFO.phone}
             </a>{' '}
             o escríbenos por{' '}
             <a
-              href="https://wa.me/34123456789"
+              href={CONTACT_INFO.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline font-semibold"

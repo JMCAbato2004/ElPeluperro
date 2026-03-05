@@ -6,6 +6,9 @@ import { BlogPostCard } from '@/components/ui/BlogPostCard';
 import { Pagination } from '@/components/ui/Pagination';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { BlogFilters } from '@/components/ui/BlogFilters';
+import { InFeedAd } from '@/components/ads/InFeedAd';
+import { DisplayAd } from '@/components/ads/DisplayAd';
+import { AD_SLOTS } from '@/lib/ads/config';
 import { calculateReadingTime } from '@/lib/sanity/helpers';
 
 interface BlogPost {
@@ -48,17 +51,29 @@ export default function BlogPage() {
   // Cargar posts y categorías
   useEffect(() => {
     async function loadData() {
+      console.log('🔄 INICIANDO CARGA DE POSTS...');
       try {
-        const { getBlogPosts, getCategories } = await import('@/lib/sanity/helpers');
+        // Forzar recarga del módulo
+        const timestamp = Date.now();
+        const { getBlogPosts, getCategories } = await import(`@/lib/sanity/helpers?t=${timestamp}`);
         const [fetchedPosts, fetchedCategories] = await Promise.all([
           getBlogPosts(),
           getCategories(),
         ]);
+        
+        // Debug: verificar imágenes
+        console.log('=== POSTS CARGADOS ===', fetchedPosts.length, 'posts');
+        fetchedPosts.slice(0, 5).forEach((post, i) => {
+          console.log(`${i + 1}. ${post.title}`);
+          console.log(`   featuredImage:`, post.featuredImage);
+          console.log(`   Image ref:`, post.featuredImage?.asset?._ref);
+        });
+        
         setAllPosts(fetchedPosts);
         setFilteredPosts(fetchedPosts);
         setCategories(fetchedCategories);
       } catch (error) {
-        console.error('Error loading blog data:', error);
+        console.error('❌ Error loading blog data:', error);
       } finally {
         setLoading(false);
       }
@@ -189,8 +204,17 @@ export default function BlogPage() {
                   </p>
                 </div>
 
+                {/* Anuncio superior en listado de blog */}
+                <div className="mb-8">
+                  <DisplayAd 
+                    slot={AD_SLOTS.blog_top} 
+                    format="horizontal"
+                    className="mx-auto"
+                  />
+                </div>
+
                 <div className="mb-12 grid gap-8 sm:grid-cols-2">
-                  {currentPosts.map((post) => {
+                  {currentPosts.map((post, index) => {
                     const readingTime = post.content
                       ? calculateReadingTime(post.content)
                       : 5;
@@ -199,30 +223,39 @@ export default function BlogPage() {
                     let imageUrl: string | undefined = undefined;
                     if (post.featuredImage?.asset?._ref) {
                       const ref = post.featuredImage.asset._ref;
-                      console.log('Post:', post.title, 'ref:', ref);
+                      console.log(`[${post.title}] ref:`, ref, 'starts with /images/?', ref.startsWith('/images/'));
                       // Si la referencia es una ruta de imagen real, usarla directamente
                       if (ref.startsWith('/images/')) {
                         imageUrl = ref;
-                        console.log('Setting imageUrl to:', imageUrl);
+                        console.log(`[${post.title}] ✓ imageUrl set to:`, imageUrl);
                       }
+                    } else {
+                      console.log(`[${post.title}] ✗ No featuredImage.asset._ref`);
                     }
 
-                    console.log('Passing to BlogPostCard:', post.title, 'imageUrl:', imageUrl);
+                    // Insertar anuncio in-feed cada 4 posts
+                    const shouldShowAd = index > 0 && (index + 1) % 4 === 0;
 
                     return (
-                      <BlogPostCard
-                        key={post._id}
-                        slug={post.slug.current}
-                        title={post.title}
-                        excerpt={post.excerpt || ''}
-                        featuredImage={imageUrl}
-                        publishedAt={post.publishedAt || new Date().toISOString()}
-                        category={{
-                          title: post.category?.title || 'General',
-                          slug: post.category?.slug.current || 'general',
-                        }}
-                        readingTime={readingTime}
-                      />
+                      <div key={post._id} className="contents">
+                        <BlogPostCard
+                          slug={post.slug.current}
+                          title={post.title}
+                          excerpt={post.excerpt || ''}
+                          featuredImage={imageUrl}
+                          publishedAt={post.publishedAt || new Date().toISOString()}
+                          category={{
+                            title: post.category?.title || 'General',
+                            slug: post.category?.slug.current || 'general',
+                          }}
+                          readingTime={readingTime}
+                        />
+                        {shouldShowAd && (
+                          <div className="sm:col-span-2">
+                            <InFeedAd slot={AD_SLOTS.blog_in_feed} />
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

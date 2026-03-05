@@ -1,0 +1,138 @@
+# Design Document: Portal Transformation
+
+## Introduction
+
+Este documento detalla el diseño técnico para transformar El Peluperro en un portal de referencia sobre cuidado canino. Incluye arquitectura de componentes, estructura de datos, flujos de usuario y especificaciones de implementación.
+
+## System Architecture
+
+### High-Level Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Next.js 14 App                          │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │                   App Router                            │ │
+│  │  ┌──────────┬──────────┬──────────┬──────────────────┐ │ │
+│  │  │ Homepage │   Blog   │Comparati-│     Guías        │ │ │
+│  │  │          │          │  vas     │                  │ │ │
+│  │  └──────────┴──────────┴──────────┴──────────────────┘ │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │              Component Layer                            │ │
+│  │  ┌──────────┬──────────┬──────────┬──────────────────┐ │ │
+│  │  │ AdSense  │Affiliate │ Content  │   Newsletter     │ │ │
+│  │  │Components│Components│Components│   Components     │ │ │
+│  │  └──────────┴──────────┴──────────┴──────────────────┘ │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │                 Data Layer                              │ │
+│  │  ┌──────────┬──────────┬──────────┬──────────────────┐ │ │
+│  │  │  Sanity  │Analytics │ AdSense  │   Affiliate      │ │ │
+│  │  │   CMS    │   (GA4)  │   API    │   Tracking       │ │ │
+│  │  └──────────┴──────────┴──────────┴──────────────────┘ │ │
+│  └────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## File Structure
+
+
+```
+project-root/
+├── app/
+│   ├── layout.tsx                    # Layout principal con AdSense
+│   ├── page.tsx                      # Homepage rediseñada
+│   ├── sobre-mi/
+│   │   └── page.tsx                  # Página del autor (E-E-A-T)
+│   ├── afiliacion/
+│   │   └── page.tsx                  # Política de afiliación
+│   ├── blog/
+│   │   ├── page.tsx                  # Lista de artículos
+│   │   ├── [slug]/
+│   │   │   └── page.tsx              # Artículo individual con ads
+│   │   └── categoria/
+│   │       └── [slug]/
+│   │           └── page.tsx          # Categoría
+│   ├── comparativas/                 # NUEVO
+│   │   ├── page.tsx                  # Lista de comparativas
+│   │   └── [slug]/
+│   │       └── page.tsx              # Comparativa individual
+│   ├── guias/                        # NUEVO
+│   │   ├── page.tsx                  # Lista de guías
+│   │   └── [slug]/
+│   │       └── page.tsx              # Guía individual
+│   ├── servicios/                    # Existente (secundario)
+│   ├── privacidad/
+│   │   └── page.tsx                  # Actualizar con AdSense
+│   └── cookies/
+│       └── page.tsx                  # Actualizar con ads
+│
+├── components/
+│   ├── ads/                          # NUEVO
+│   │   ├── AdSenseScript.tsx
+│   │   ├── AdSenseUnit.tsx
+│   │   ├── DisplayAd.tsx
+│   │   ├── InArticleAd.tsx
+│   │   ├── InFeedAd.tsx
+│   │   ├── StickyAd.tsx
+│   │   └── types.ts
+│   ├── affiliate/                    # NUEVO
+│   │   ├── AffiliateLink.tsx
+│   │   ├── AffiliateDisclosure.tsx
+│   │   ├── ProductCard.tsx
+│   │   └── types.ts
+│   ├── comparisons/                  # NUEVO
+│   │   ├── ComparisonTable.tsx
+│   │   ├── ProductAnalysis.tsx
+│   │   └── types.ts
+│   ├── guides/                       # NUEVO
+│   │   ├── TableOfContents.tsx
+│   │   ├── ProgressBar.tsx
+│   │   └── types.ts
+│   ├── newsletter/                   # NUEVO
+│   │   ├── NewsletterSignup.tsx
+│   │   └── types.ts
+│   ├── layout/
+│   │   ├── Header.tsx                # Actualizar navegación
+│   │   └── Footer.tsx                # Actualizar
+│   └── sections/
+│       ├── HeroSection.tsx           # Rediseñar
+│       └── FeaturedArticles.tsx      # NUEVO
+│
+├── lib/
+│   ├── ads/                          # NUEVO
+│   │   ├── config.ts
+│   │   ├── utils.ts
+│   │   └── constants.ts
+│   ├── affiliate/                    # NUEVO
+│   │   ├── config.ts
+│   │   ├── tracking.ts
+│   │   └── utils.ts
+│   ├── sanity/
+│   │   ├── schemas/
+│   │   │   ├── post.ts               # Actualizar
+│   │   │   └── product.ts            # NUEVO
+│   │   └── queries.ts                # Actualizar
+│   └── analytics/                    # NUEVO
+│       ├── events.ts
+│       └── tracking.ts
+│
+├── .env.local
+│   # NEXT_PUBLIC_ADSENSE_CLIENT_ID
+│   # NEXT_PUBLIC_AMAZON_AFFILIATE_TAG
+│   # NEXT_PUBLIC_TIENDANIMAL_PARTNER_ID
+│   # NEWSLETTER_API_KEY
+│
+└── sanity/
+    └── schemas/
+        ├── post.ts                   # Actualizar
+        └── product.ts                # NUEVO
+```
+
+## Data Models
+
+### Updated Post Schema (Sanity)
+

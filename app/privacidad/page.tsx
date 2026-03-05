@@ -124,7 +124,61 @@ export default function PrivacidadPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-dark mb-4">9. Cambios en la Política de Privacidad</h2>
+            <h2 className="text-2xl font-bold text-dark mb-4">9. Google AdSense y Publicidad</h2>
+            <p className="text-gray-700 mb-4">
+              Este sitio web utiliza Google AdSense, un servicio de publicidad proporcionado por Google LLC. Google AdSense utiliza cookies 
+              y otras tecnologías de seguimiento para mostrar anuncios personalizados basados en sus visitas anteriores a nuestro sitio web 
+              y otros sitios en Internet.
+            </p>
+            <h3 className="text-xl font-semibold text-dark mb-3 mt-6">Información Recopilada por Google AdSense</h3>
+            <p className="text-gray-700 mb-4">
+              Google puede recopilar y procesar la siguiente información:
+            </p>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2">
+              <li>Dirección IP (anonimizada)</li>
+              <li>Identificadores de cookies y dispositivos</li>
+              <li>Páginas visitadas y tiempo de permanencia</li>
+              <li>Interacciones con anuncios</li>
+              <li>Información del navegador y dispositivo</li>
+            </ul>
+            <h3 className="text-xl font-semibold text-dark mb-3 mt-6">Personalización de Anuncios</h3>
+            <p className="text-gray-700 mb-4">
+              Puede gestionar sus preferencias de anuncios personalizados visitando la página de{' '}
+              <a 
+                href="https://www.google.com/settings/ads" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
+                Configuración de Anuncios de Google
+              </a>
+              . También puede optar por no participar en la publicidad personalizada visitando{' '}
+              <a 
+                href="https://www.aboutads.info/choices/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
+                www.aboutads.info
+              </a>
+              .
+            </p>
+            <p className="text-gray-700">
+              Para más información sobre cómo Google utiliza los datos cuando usted utiliza sitios web de nuestros partners, visite{' '}
+              <a 
+                href="https://policies.google.com/technologies/partner-sites" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
+                policies.google.com/technologies/partner-sites
+              </a>
+              .
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-dark mb-4">10. Cambios en la Política de Privacidad</h2>
             <p className="text-gray-700">
               Nos reservamos el derecho de modificar esta Política de Privacidad en cualquier momento. Los cambios serán publicados en esta 
               página con la fecha de actualización correspondiente.
@@ -132,7 +186,7 @@ export default function PrivacidadPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-dark mb-4">10. Contacto</h2>
+            <h2 className="text-2xl font-bold text-dark mb-4">11. Contacto</h2>
             <p className="text-gray-700">
               Si tiene alguna pregunta sobre esta Política de Privacidad o sobre el tratamiento de sus datos personales, puede contactarnos en:
             </p>

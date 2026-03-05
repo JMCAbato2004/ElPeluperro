@@ -30,7 +30,7 @@ export function BlogPostCard({
     day: 'numeric',
   });
 
-  console.log('BlogPostCard:', title, 'featuredImage:', featuredImage);
+  console.log(`[BlogPostCard] ${title} - featuredImage:`, featuredImage);
 
   return (
     <article className="group overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-xl">

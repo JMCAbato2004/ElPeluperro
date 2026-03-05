@@ -99,6 +99,69 @@ export default function CookiesPage() {
             <p className="text-gray-700 italic">
               Actualmente no utilizamos cookies de marketing en nuestro sitio web.
             </p>
+
+            <h3 className="text-xl font-semibold text-dark mb-3 mt-6">2.4. Cookies Publicitarias (Google AdSense)</h3>
+            <p className="text-gray-700 mb-4">
+              Utilizamos Google AdSense para mostrar anuncios en nuestro sitio web. Google AdSense utiliza cookies 
+              para personalizar los anuncios que se muestran según sus intereses y para medir la efectividad de las 
+              campañas publicitarias.
+            </p>
+            <div className="bg-gray-50 p-4 rounded-lg mb-4">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-2 font-semibold">Cookie</th>
+                    <th className="text-left py-2 font-semibold">Finalidad</th>
+                    <th className="text-left py-2 font-semibold">Duración</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-2">__gads</td>
+                    <td className="py-2">Registra y reporta las acciones del usuario en el sitio web tras ver o hacer clic en uno de los anuncios</td>
+                    <td className="py-2">13 meses</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-2">__gpi</td>
+                    <td className="py-2">Recopila información sobre el comportamiento del visitante en múltiples sitios web</td>
+                    <td className="py-2">13 meses</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-2">DSID</td>
+                    <td className="py-2">Identifica al usuario y permite la personalización de anuncios</td>
+                    <td className="py-2">2 semanas</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-2">IDE</td>
+                    <td className="py-2">Utilizada por Google DoubleClick para registrar e informar sobre las acciones del usuario</td>
+                    <td className="py-2">13 meses</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-gray-700 mb-4">
+              Puede gestionar sus preferencias de anuncios personalizados de Google visitando:{' '}
+              <a 
+                href="https://www.google.com/settings/ads" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
+                Configuración de Anuncios de Google
+              </a>
+            </p>
+            <p className="text-gray-700">
+              Para más información sobre cómo Google utiliza las cookies, consulte la{' '}
+              <a 
+                href="https://policies.google.com/technologies/ads" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:underline"
+              >
+                Política de Publicidad de Google
+              </a>
+              .
+            </p>
           </section>
 
           <section className="mb-8">
@@ -138,6 +201,7 @@ export default function CookiesPage() {
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
               <li><strong>Google Analytics:</strong> Para análisis de tráfico web</li>
               <li><strong>Google Maps:</strong> Para mostrar mapas interactivos</li>
+              <li><strong>Google AdSense:</strong> Para mostrar anuncios personalizados</li>
             </ul>
             <p className="text-gray-700 mt-4">
               No tenemos control sobre estas cookies de terceros. Para más información sobre cómo estos servicios 

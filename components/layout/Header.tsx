@@ -11,7 +11,6 @@ const navItems = [
   { label: 'Servicios', href: '/servicios' },
   { label: 'Calculadora', href: '/calculadora' },
   { label: 'Quiz', href: '/quiz' },
-  { label: 'Galería', href: '/galeria' },
   { label: 'Blog', href: '/blog' },
   { label: 'Sobre Nosotros', href: '/sobre-nosotros' },
   { label: 'Contacto', href: '/contacto' },

@@ -37,15 +37,14 @@ export default function SobreNosotrosPage() {
             {/* Photo */}
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl bg-gray-200">
-                {/* Placeholder for owner photo */}
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-                  <div className="text-center">
-                    <div className="text-8xl mb-4">👨‍⚕️</div>
-                    <p className="text-gray-600 text-sm">
-                      Foto de José Antonio Camacho
-                    </p>
-                  </div>
-                </div>
+                <Image
+                  src="/images/jose-antonio.jpg"
+                  alt="José Antonio Camacho - Fundador de El Peluperro"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
               </div>
               {/* Decorative elements */}
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/20 rounded-full -z-10" />

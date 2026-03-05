@@ -8,8 +8,8 @@ export const CONTACT_INFO = {
   phoneInternational: '+34650220798', // Con código de país para WhatsApp
   
   // Email
-  email: 'el.peluperro@gmail.com.com',
-  adminEmail: 'el.peluperro@gmail.com.com', // Email para recibir formularios
+  email: 'el.peluperro@gmail.com',
+  adminEmail: 'el.peluperro@gmail.com', // Email para recibir formularios
   
   // Redes sociales
   whatsapp: 'https://wa.me/34650220798',

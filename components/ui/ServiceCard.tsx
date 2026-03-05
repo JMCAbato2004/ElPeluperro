@@ -45,24 +45,15 @@ export default function ServiceCard({ service, showBookingCTA = false }: Service
         </ul>
       )}
 
-      {/* Botones de acción */}
-      <div className="flex flex-col gap-3">
+      {/* Botón de acción */}
+      {showBookingCTA && (
         <Link
-          href={`/servicios/${service.slug.current}`}
+          href={`/reservar?servicio=${service.slug.current}`}
           className="inline-block w-full rounded-full bg-primary px-6 py-3 text-center font-semibold text-white transition-colors hover:bg-primary/90"
         >
-          Más Información
+          Reservar este servicio
         </Link>
-        
-        {showBookingCTA && (
-          <Link
-            href={`/reservar?servicio=${service.slug.current}`}
-            className="inline-block w-full rounded-full border-2 border-primary px-6 py-3 text-center font-semibold text-primary transition-colors hover:bg-primary/5"
-          >
-            Reservar este servicio
-          </Link>
-        )}
-      </div>
+      )}
     </div>
   );
 }
